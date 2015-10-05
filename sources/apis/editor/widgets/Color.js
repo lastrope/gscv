@@ -29,7 +29,8 @@ define( [
         ].join( '' ),
 
         events: _.extend( {}, Widget.prototype.events, {
-            'change .value:input': 'changeEvent'
+            'change .value:input': 'changeEvent',
+            'keyup .value:input': 'changeEvent',
         } ),
 
         initialize: function ( options ) {
@@ -37,54 +38,50 @@ define( [
             options = _.defaults( options || {}, {
 
                 model: new Backbone.Model(),
-                name: 'value'
+                name: 'value',
+                
+                color: '#FFFFFF'
 
             } );
 
             Widget.prototype.initialize.call( this, options );
 
-            if ( typeof this.get() === 'undefined' )
-                this.set( {
-                    r: 1,
-                    g: 1,
-                    b: 1
-                } );
-
+            if ( typeof this.get() === 'undefined' ){
+                this.set({
+                    r:1,
+                    g:1,
+                    b:1
+                });
+            }
+            
             this.colorPicker = SvgColorPicker( {
-
+                
                 slider: this.$( '.slider' )[ 0 ],
                 picker: this.$( '.picker' )[ 0 ],
 
                 sliderCursor: this.$( '.slider > .cursor' )[ 0 ],
                 pickerCursor: this.$( '.picker > .cursor' )[ 0 ]
 
-            }, function ( hsv, rgb /*, hex*/ ) {
-
-                this.change( rgb );
-
+            }, function ( hsv, rgb , hex ) {
+                
+                this.change( hex );
+                
             }.bind( this ) );
-
+            this.colorPicker.set(options.color);
         },
 
         changeEvent: function () {
-
-            this.colorPicker.set( this.$( '.value' ).val() );
-
+            var hex = this.$( '.value' ).val();
+            if(hex.length > 7)
+               hex = this.$( '.value' ).val(hex.substring(0, 7));
+            if(hex.length === 7)
+                this.colorPicker.set( hex );
         },
 
         render: function () {
 
-            var rgb = this.get();
-
-            this.colorPicker.set( rgb );
-
-            var rounded = {
-                r: rgb.r * 255,
-                g: rgb.g * 255,
-                b: rgb.b * 255
-            };
-            var hex = '#' + ( 16777216 | rounded.b | ( rounded.g << 8 ) | ( rounded.r << 16 ) ).toString( 16 ).substr( 1 );
-
+            var hex = this.get(); 
+            this.colorPicker.set( hex );
             this.$( '.value' ).val( hex );
 
         }

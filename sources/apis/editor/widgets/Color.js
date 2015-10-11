@@ -30,6 +30,7 @@ define( [
 
         events: _.extend( {}, Widget.prototype.events, {
             'change .value:input': 'changeEvent'
+
         } ),
 
         initialize: function ( options ) {
@@ -39,7 +40,6 @@ define( [
                 model: new Backbone.Model(),
                 name: 'value',
                 color : '#FFFFFF' // init hex color
-
             } );
 
             Widget.prototype.initialize.call( this, options );
@@ -52,7 +52,6 @@ define( [
                 } );
 
             this.colorPicker = SvgColorPicker( {
-
                 slider: this.$( '.slider' )[ 0 ],
                 picker: this.$( '.picker' )[ 0 ],
 
@@ -71,7 +70,6 @@ define( [
         changeEvent: function () {
 
             this.colorPicker.set( this.$( '.value' ).val() );
-
         },
 
         render: function () {

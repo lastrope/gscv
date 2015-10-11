@@ -37,11 +37,13 @@ define( [
             this.onFontColorChange( );
             this.onJobChange( );
             this.onNameChange( );
+
         },
 
         onRadiusChange : function ( ) {
             this.$el.css( 'border-radius', this.model.get( 'radius' ) );
         },
+
         onCardColorChange : function ( ) {
             this.$el.css( 'background-color', this.model.get( 'bgcardcolor' ) );
         },
@@ -71,7 +73,6 @@ define( [
     // --- --- --- --- --- --- --- --- ---
 
     var card = new Card( );
-
     var view = new View( { model : card, el : $( '.card' ) } );
 
     view.render( );
@@ -135,8 +136,4 @@ define( [
         text : 'Choose a picture'
         
     } );
-    
-    
-    
-
 } );
